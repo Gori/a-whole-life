@@ -1,5 +1,5 @@
+import 'dotenv/config'
 import { buildConfig } from 'payload'
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -15,7 +15,9 @@ import { Pages } from './collections/Pages'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const isProduction = process.env.DATABASE_URL !== undefined
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is required')
+}
 
 export default buildConfig({
   admin: {
@@ -41,18 +43,12 @@ export default buildConfig({
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'a-whole-life-secret-key-change-in-production',
-  db: isProduction
-    ? postgresAdapter({
-        pool: {
-          connectionString: process.env.DATABASE_URL,
-        },
-      })
-    : sqliteAdapter({
-        client: {
-          url: 'file:./payload.db',
-        },
-      }),
-  plugins: isProduction && process.env.BLOB_READ_WRITE_TOKEN
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URL,
+    },
+  }),
+  plugins: process.env.BLOB_READ_WRITE_TOKEN
     ? [
         vercelBlobStorage({
           collections: {
