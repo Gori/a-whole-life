@@ -29,7 +29,7 @@ export default function FrontendLayout({
       <body className={`${helveticaNow.className} antialiased`}>
         <div className="min-h-screen bg-black">
           <header className="fixed top-0 left-0 right-0 z-50">
-            <nav className="mx-auto max-w-5xl xl:max-w-6xl 2xl:max-w-7xl px-8 py-4">
+            <nav className="mx-auto max-w-4xl xl:max-w-5xl px-8 py-4">
               <div className="flex items-center justify-between">
                 <Link href="/" className="text-lg font-semibold text-white drop-shadow-lg">
                   A Whole Life

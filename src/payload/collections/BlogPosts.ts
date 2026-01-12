@@ -1,5 +1,24 @@
 import type { CollectionConfig } from 'payload'
 
+// Site owner's birth date - used to calculate lifeAge automatically
+const BIRTH_DATE = new Date('1996-10-14')
+
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+function calculateAge(birthDate: Date, eventDate: Date): number {
+  let age = eventDate.getFullYear() - birthDate.getFullYear()
+  const monthDiff = eventDate.getMonth() - birthDate.getMonth()
+  if (monthDiff < 0 || (monthDiff === 0 && eventDate.getDate() < birthDate.getDate())) {
+    age--
+  }
+  return age
+}
+
 export const BlogPosts: CollectionConfig = {
   slug: 'blog-posts',
   admin: {
@@ -22,6 +41,7 @@ export const BlogPosts: CollectionConfig = {
       unique: true,
       admin: {
         position: 'sidebar',
+        description: 'Auto-generated from title if left empty',
       },
     },
     {
@@ -33,7 +53,10 @@ export const BlogPosts: CollectionConfig = {
       name: 'excerpt',
       type: 'textarea',
       admin: {
-        description: 'A short summary for previews and SEO',
+        description: 'Click "Generate from content" to auto-fill',
+        components: {
+          Field: '@/payload/components/ExcerptField#ExcerptField',
+        },
       },
     },
     // Life timeline fields
@@ -45,14 +68,15 @@ export const BlogPosts: CollectionConfig = {
           pickerAppearance: 'dayOnly',
           displayFormat: 'yyyy-MM-dd',
         },
-        description: 'The date this memory/event occurred in your life',
+        description: 'The date this memory/event occurred - lifeAge will be calculated automatically',
       },
     },
     {
       name: 'lifeAge',
       type: 'number',
       admin: {
-        description: 'Your age when this memory/event occurred (optional, can be used instead of or with lifeDate)',
+        readOnly: true,
+        description: 'Automatically calculated from lifeDate',
       },
     },
     // Categorization
@@ -94,7 +118,7 @@ export const BlogPosts: CollectionConfig = {
     {
       name: 'status',
       type: 'select',
-      defaultValue: 'draft',
+      defaultValue: 'published',
       options: [
         { label: 'Draft', value: 'draft' },
         { label: 'Published', value: 'published' },
@@ -111,6 +135,7 @@ export const BlogPosts: CollectionConfig = {
         date: {
           pickerAppearance: 'dayAndTime',
         },
+        description: 'Defaults to now',
       },
     },
     // Soft delete
@@ -125,14 +150,32 @@ export const BlogPosts: CollectionConfig = {
     },
   ],
   hooks: {
+    beforeValidate: [
+      ({ data, operation }) => {
+        if (!data) return data
+
+        // Auto-generate slug from title
+        if ((operation === 'create' || operation === 'update') && data.title && !data.slug) {
+          data.slug = generateSlug(data.title)
+        }
+
+        return data
+      },
+    ],
     beforeChange: [
       ({ data, operation }) => {
-        // Auto-set publishedAt when publishing
-        if (operation === 'create' || operation === 'update') {
-          if (data.status === 'published' && !data.publishedAt) {
-            data.publishedAt = new Date().toISOString()
-          }
+        if (!data) return data
+
+        // Auto-set publishedAt to now if not set
+        if (operation === 'create' && !data.publishedAt) {
+          data.publishedAt = new Date().toISOString()
         }
+
+        // Auto-calculate lifeAge from lifeDate
+        if (data.lifeDate) {
+          data.lifeAge = calculateAge(BIRTH_DATE, new Date(data.lifeDate))
+        }
+
         return data
       },
     ],

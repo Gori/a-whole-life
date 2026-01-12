@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getPayloadClient } from '@/payload/client'
 import PageLoader from './components/PageLoader'
+import { RichText } from './blog/[slug]/RichText'
 
 export const revalidate = 0
 
@@ -19,8 +20,8 @@ export default async function HomePage() {
 
   return (
     <PageLoader>
-      <section className="py-20 max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto px-8">
-        <div className="flex items-center justify-between mb-12">
+      <section className="py-20 max-w-4xl xl:max-w-5xl mx-auto px-8">
+        <div className="flex items-center justify-between mb-16">
           <h2 className="text-4xl font-semibold text-white">
             Recent Posts
           </h2>
@@ -32,20 +33,15 @@ export default async function HomePage() {
         {posts.docs.length === 0 ? (
           <p className="text-xl text-zinc-500">No posts yet.</p>
         ) : (
-          <div className="space-y-12">
+          <div className="space-y-24">
             {posts.docs.map((post) => (
-              <article key={post.id} className="border-b border-zinc-800 pb-12 last:border-0">
+              <article key={post.id}>
                 <Link href={`/blog/${post.slug}`}>
-                  <h3 className="text-3xl font-medium text-white hover:text-zinc-300">
+                  <h3 className="text-5xl lg:text-6xl font-bold text-white hover:text-zinc-300 mb-6">
                     {post.title}
                   </h3>
                 </Link>
-                {post.excerpt && (
-                  <p className="mt-4 text-xl text-zinc-400 line-clamp-2 leading-relaxed">
-                    {post.excerpt}
-                  </p>
-                )}
-                <div className="mt-4 flex gap-6 text-base text-zinc-500">
+                <div className="mb-8 flex gap-6 text-lg text-zinc-500">
                   {post.publishedAt && (
                     <time dateTime={post.publishedAt}>
                       {new Date(post.publishedAt).toLocaleDateString('en-US', {
@@ -58,6 +54,9 @@ export default async function HomePage() {
                   {post.lifeAge && (
                     <span>Age {post.lifeAge}</span>
                   )}
+                </div>
+                <div className="prose prose-xl prose-invert max-w-none">
+                  <RichText content={post.content} />
                 </div>
               </article>
             ))}
