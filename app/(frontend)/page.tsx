@@ -21,15 +21,6 @@ export default async function HomePage() {
   return (
     <PageLoader>
       <section className="py-20 max-w-4xl xl:max-w-5xl mx-auto px-8">
-        <div className="flex items-center justify-between mb-16">
-          <h2 className="text-4xl font-semibold text-white">
-            Recent Posts
-          </h2>
-          <Link href="/blog" className="text-lg text-zinc-400 hover:text-white">
-            View all →
-          </Link>
-        </div>
-
         {posts.docs.length === 0 ? (
           <p className="text-xl text-zinc-500">No posts yet.</p>
         ) : (
