@@ -3,15 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
-    "next": "16.1.1",
+    "@payloadcms/db-postgres": "^3.70.0",
+    "@payloadcms/db-sqlite": "^3.70.0",
+    "@payloadcms/next": "^3.70.0",
+    "@payloadcms/richtext-lexical": "^3.70.0",
+    "@payloadcms/storage-vercel-blob": "^3.70.0",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/three": "^0.182.0",
+    "@vercel/blob": "^2.0.0",
+    "next": "^15.4.10",
+    "payload": "^3.70.0",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "sass": "^1.77.4",
+    "sharp": "^0.34.5",
+    "three": "^0.182.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
