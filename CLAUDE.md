@@ -14,7 +14,7 @@ This is a Next.js 15 App Router project with:
 - React 19
 - TypeScript (strict mode)
 - Tailwind CSS 4 (using `@import "tailwindcss"` syntax)
-- Payload CMS 3.x with SQLite database
+- Payload CMS 3.x with PostgreSQL (Neon)
 - ESLint 9 flat config with Next.js core-web-vitals and TypeScript rules
 
 ### Project Structure
