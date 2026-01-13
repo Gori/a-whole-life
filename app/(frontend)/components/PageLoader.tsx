@@ -1,29 +1,37 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useCallback, useSyncExternalStore } from 'react'
 import HeroSection from './HeroSection'
+
+const STORAGE_KEY = 'hasSeenIntro'
+
+function subscribe(callback: () => void) {
+  window.addEventListener('storage', callback)
+  return () => window.removeEventListener('storage', callback)
+}
+
+function getSnapshot() {
+  return sessionStorage.getItem(STORAGE_KEY) === 'true'
+}
+
+function getServerSnapshot() {
+  return false
+}
 
 interface PageLoaderProps {
   children: React.ReactNode
 }
 
 export default function PageLoader({ children }: PageLoaderProps) {
-  const [showLoader, setShowLoader] = useState<boolean | null>(null)
+  const hasSeenIntro = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const [loaderComplete, setLoaderComplete] = useState(false)
 
-  useEffect(() => {
-    const hasSeenIntro = sessionStorage.getItem('hasSeenIntro')
-    setShowLoader(!hasSeenIntro)
+  const handleLoaderComplete = useCallback(() => {
+    sessionStorage.setItem(STORAGE_KEY, 'true')
+    setLoaderComplete(true)
   }, [])
 
-  const handleLoaderComplete = () => {
-    sessionStorage.setItem('hasSeenIntro', 'true')
-    setShowLoader(false)
-  }
-
-  // Don't render anything until we've checked sessionStorage
-  if (showLoader === null) {
-    return <>{children}</>
-  }
+  const showLoader = !hasSeenIntro && !loaderComplete
 
   return (
     <>

@@ -27,7 +27,7 @@ function truncateText(text: string, maxLength: number): string {
 }
 
 export function ExcerptField(props: TextareaFieldClientProps) {
-  const { value, setValue } = useField<string>({ path: props.path })
+  const { setValue } = useField<string>({ path: props.path })
   const contentField = useFormFields(([fields]) => fields.content)
 
   const generateExcerpt = () => {

@@ -138,7 +138,7 @@ export default function TunnelShader({ onReady }: TunnelShaderProps) {
       material.dispose()
       container.removeChild(renderer.domElement)
     }
-  }, [])
+  }, [onReady])
 
   return <div ref={containerRef} className="absolute inset-0 w-full h-full" style={{ background: '#000' }} />
 }
