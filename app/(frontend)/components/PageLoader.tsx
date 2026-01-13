@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import HeroSection from './HeroSection'
 
 interface PageLoaderProps {
@@ -8,10 +8,21 @@ interface PageLoaderProps {
 }
 
 export default function PageLoader({ children }: PageLoaderProps) {
-  const [showLoader, setShowLoader] = useState(true)
+  const [showLoader, setShowLoader] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    const hasSeenIntro = sessionStorage.getItem('hasSeenIntro')
+    setShowLoader(!hasSeenIntro)
+  }, [])
 
   const handleLoaderComplete = () => {
+    sessionStorage.setItem('hasSeenIntro', 'true')
     setShowLoader(false)
+  }
+
+  // Don't render anything until we've checked sessionStorage
+  if (showLoader === null) {
+    return <>{children}</>
   }
 
   return (

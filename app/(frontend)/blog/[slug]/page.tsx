@@ -40,7 +40,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         <Link href="/blog" className="text-base text-zinc-400 hover:text-white mb-6 inline-block">
           &larr; Back to Archive
         </Link>
-        <h1 className="text-6xl lg:text-7xl font-bold text-white mb-6">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
           {post.title}
         </h1>
         <div className="flex flex-wrap gap-6 text-lg text-zinc-400">
@@ -104,7 +104,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         </div>
       )}
 
-      <div className="prose prose-xl prose-invert max-w-none">
+      <div className="prose prose-lg md:prose-xl prose-invert max-w-none">
         <RichText content={post.content} />
       </div>
 

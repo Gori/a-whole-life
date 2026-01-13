@@ -32,7 +32,7 @@ export default async function HomePage() {
               return (
                 <article key={post.id}>
                   <Link href={`/blog/${post.slug}`}>
-                    <h3 className="text-5xl lg:text-6xl font-bold text-white hover:text-zinc-300 mb-6">
+                    <h3 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white hover:text-zinc-300 mb-6">
                       {post.title}
                     </h3>
                   </Link>
@@ -74,7 +74,7 @@ export default async function HomePage() {
                     </div>
                   )}
 
-                  <div className="prose prose-xl prose-invert max-w-none">
+                  <div className="prose prose-lg md:prose-xl prose-invert max-w-none">
                     <RichText content={post.content} />
                   </div>
                 </article>
