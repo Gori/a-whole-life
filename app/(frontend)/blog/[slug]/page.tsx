@@ -37,9 +37,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   return (
     <article className="py-20 max-w-4xl xl:max-w-5xl mx-auto px-8">
       <header className="mb-12">
-        <Link href="/blog" className="text-base text-zinc-400 hover:text-white mb-6 inline-block">
-          &larr; Back to Archive
-        </Link>
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
           {post.title}
         </h1>
