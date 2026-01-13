@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import localFont from 'next/font/local'
 import '../globals.css'
+import { LayoutClient } from './components/LayoutClient'
 
 const helveticaNow = localFont({
   src: [
@@ -27,28 +28,30 @@ export default function FrontendLayout({
   return (
     <html lang="en" className={helveticaNow.variable}>
       <body className={`${helveticaNow.className} antialiased`}>
-        <div className="min-h-screen bg-black">
-          <header>
-            <nav className="mx-auto max-w-4xl xl:max-w-5xl px-8 py-4">
-              <div className="flex items-center justify-between">
-                <Link href="/" className="text-lg font-semibold text-white">
-                  AMANDA AASA
-                </Link>
-                <div className="flex gap-6 text-sm">
-                  <Link href="/blog" className="text-white/80 hover:text-white drop-shadow">
-                    Archive
+        <LayoutClient>
+          <div className="min-h-screen bg-black">
+            <header>
+              <nav className="mx-auto max-w-4xl xl:max-w-5xl px-8 py-4">
+                <div className="flex items-center justify-between">
+                  <Link href="/" className="text-lg font-semibold text-white">
+                    AMANDA AASA
                   </Link>
-                  <Link href="/about" className="text-white/80 hover:text-white drop-shadow">
-                    About
-                  </Link>
+                  <div className="flex gap-6 text-sm">
+                    <Link href="/blog" className="text-white/80 hover:text-white drop-shadow">
+                      Archive
+                    </Link>
+                    <Link href="/about" className="text-white/80 hover:text-white drop-shadow">
+                      About
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </nav>
-          </header>
-          <main>
-            {children}
-          </main>
-        </div>
+              </nav>
+            </header>
+            <main>
+              {children}
+            </main>
+          </div>
+        </LayoutClient>
       </body>
     </html>
   )
